@@ -6,7 +6,6 @@ let food = null
 let direction = 'right';
 
 const foodImg = ["./img/rahul2.jpg", "./img/mamta.png", "./img/arvind.jpeg","./img/lallu.png","./img/tejpratap.jpg"];
-// const foodImgUrl= foodImg[Math.floor(Math.random()*foodImg.length)];
 
 window.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowUp' && direction !== 'down') {
@@ -78,11 +77,9 @@ function foodGenerator() {
             cell.classList.add('food');
             document.querySelector('.food').style.backgroundImage = `url(${foodImgUrl})`;
             food = { x: foodX, y: foodY };
-            console.log(food);
         }
     })
 }
-
 
 function moveSnake() {
     const cells = document.querySelectorAll('.block');
@@ -111,9 +108,6 @@ function moveSnake() {
     }
 
     if (direction === 'up') {
-        // if (snake.length > 1) {
-        //     head = { x: snake[0].x - 1, y: snake[0].y + 1 }
-        // }
         head = { x: snake[0].x - 1, y: snake[0].y };
         snake.forEach((part) => {
             cells.forEach((cell) => {
@@ -125,9 +119,6 @@ function moveSnake() {
     }
 
     else if (direction === 'down') {
-        // if(snake.length>1){
-        //     head = { x: snake[0].x + 1, y: snake[0].y-1 }
-        // }
         head = { x: snake[0].x + 1, y: snake[0].y };
         snake.forEach((part) => {
             cells.forEach((cell) => {
@@ -168,8 +159,17 @@ function playGame() {
         } 
     }
 }
-setInterval(() => {
-    moveSnake()
-    drawSnake()
-    playGame()
-}, 400);
+function gameLoop() {
+    let check=1;
+    const gameLoopId = setInterval(() => {
+        moveSnake()
+        drawSnake()
+        playGame()
+    }, 400);
+}
+
+document.querySelector(".start-btn").addEventListener("click",()=>{
+    document.querySelector(".overlay").style.scale=0;
+    document.querySelector(".overlay").style.transition="0.5s";
+    setTimeout(gameLoop, 600)
+})
