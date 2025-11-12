@@ -10,16 +10,25 @@
 </head>
 
 <body>
-    <div class="overlay">
+    <audio preload="auto" class="bgm" src="./img/tum_hi_ho.mp3" loop></audio>
+    <audio preload="auto" class="game-over" src="./img/over.mp3"></audio>
+    <div class="start-overlay">
         <div class="game-start">
             <h1>Vote Eater</h1>
             <button class="start-btn">Start</button>
         </div>
     </div>
+
+    <div class="over-overlay">
+        <div class="game-start">
+            <h1>Game over</h1>
+            <button class="replay-btn">Replay</button>
+        </div>
+    </div>
     <main>
         <div class="top">
             <h3>High score : <span>123</span></h3>
-            <h3>Score : <span>20</span></h3>
+            <h3>Score : <span id="score">0</span></h3>
             <h3>Time : <span>1-30</span></h3>
         </div>
         <div class="bottom">
