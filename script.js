@@ -1,21 +1,34 @@
 window.addEventListener("DOMContentLoaded", () => {
+
+    // variables
     const board = document.querySelector('main .bottom');
     const side = 50;
-    const bgm = document.querySelector(".bgm");
-    bgm.load();
+    const foodMusic = document.querySelector(".food-music");
     const over = document.querySelector(".game-over")
-    over.load();
     let rows = Math.floor(board.clientHeight / side);
     let cols = Math.floor(board.clientWidth / side);
     const score = document.querySelector("#score");
+    const startBtn = document.querySelector(".start-btn");
+    const startOverlay = document.querySelector(".start-overlay");
+    const replayBtn = document.querySelector(".replay-btn");
+    const overOverlay = document.querySelector(".over-overlay");
     let scr = 0;
-
     let snake = [{ x: 1, y: 3 }];
     let food = null
     let direction = 'right';
-
+    let timerLoopId;
+    let second = 0;
+    let minute = 0;
     const foodImg = ["./img/rahul2.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
 
+    // initial high score
+    
+
+    foodMusic.load();
+    over.load();
+
+
+    // direction
     window.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp' && direction !== 'down') {
             direction = 'up';
@@ -32,6 +45,8 @@ window.addEventListener("DOMContentLoaded", () => {
             direction = 'right';
         }
     });
+
+    // creating board
     function createBlocks() {
 
         if (board.innerHTML !== '') {
@@ -52,12 +67,14 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
     createBlocks();
+
+    // resizing the board
     window.addEventListener('resize', () => {
         createBlocks();
         drawSnake()
     });
 
-
+    // rendering snake
     function drawSnake() {
         const cells = document.querySelectorAll('.block');
         snake.forEach((part) => {
@@ -70,6 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
     }
     drawSnake()
 
+    // generating food
     function foodGenerator() {
         const cells = document.querySelectorAll('.block');
         let foodX = Math.floor(Math.random() * (board.clientHeight / side));
@@ -137,10 +155,8 @@ window.addEventListener("DOMContentLoaded", () => {
                 })
             })
         }
-
         snake.unshift(head);
         snake.pop();
-
     }
 
     function clearFood() {
@@ -163,20 +179,18 @@ window.addEventListener("DOMContentLoaded", () => {
         else {
             if (snake[0].x == food.x && snake[0].y == food.y) {
                 const tail = { x: snake[0].x, y: snake[0].y };
-                // head = { x: food.x, y: food.y };
+                foodMusic.play();
                 snake.push(tail);
-                // snake.unshift(head);
                 clearFood();
             }
         }
     }
+
     function gameLoop() {
-        let check = 1;
         const gameLoopId = setInterval(() => {
             moveSnake()
             drawSnake()
             playGame()
-            console.log(snake[0].x, snake[0].y)
             if (direction === "right" && snake[0].y > cols - 1) {
                 clearInterval(gameLoopId);
                 gameOver()
@@ -196,33 +210,30 @@ window.addEventListener("DOMContentLoaded", () => {
         }, 400);
     }
 
-    document.querySelector(".start-btn").addEventListener("click", () => {
-        document.querySelector(".start-overlay").style.transform = "scale(0)";
-        document.querySelector(".start-overlay").style.transition = "0.5s";
-        // document.querySelector(".start-overlay").style.display = "none";
+    // start game
+    startBtn.addEventListener("click", () => {
+        startOverlay.style.transform = "scale(0)";
+        startOverlay.style.transition = "0.5s";
         setTimeout(gameLoop, 600)
-        bgm.play()
+        timer()
     })
 
-
-
     function gameOver() {
-        bgm.pause();
-        document.querySelector(".over-overlay").style.transform = "scale(1)";;
-        document.querySelector(".over-overlay").style.transition = "0.5s";
+        clearInterval(timerLoopId);
+        overOverlay.style.transform = "scale(1)";;
+        overOverlay.style.transition = "0.5s";
         over.play()
-        console.log("game over")
+        saveHighScr(scr)
     }
-    document.querySelector(".replay-btn").addEventListener("click", () => {
+
+    // replay game
+    replayBtn.addEventListener("click", () => {
         const cells = document.querySelectorAll('.block');
         cells.forEach((cell) => {
             cell.classList.remove('snake');
 
         })
-
         snake = [{ x: 1, y: 3 }];
-
-
 
         cells.forEach((cell) => {
             const foodCell = document.querySelector('.food');
@@ -232,10 +243,40 @@ window.addEventListener("DOMContentLoaded", () => {
 
         })
         food = null;
-        document.querySelector(".over-overlay").style.transform = "scale(0)";
-        document.querySelector(".over-overlay").style.transition = "0.5s";
+        overOverlay.style.transform = "scale(0)";
+        overOverlay.style.transition = "0.5s";
         direction = "right";
+        scr = 0;
+        score.textContent = scr;
+        document.querySelector("#timer").textContent = 0;
         setTimeout(gameLoop, 600)
-        bgm.play();
+        timer();
     })
+
+    // Timer
+    function timer() {
+        clearInterval(timerLoopId);
+        second = 0;
+        minute = 0;
+        timerLoopId = setInterval(() => {
+            second++;
+            if (second === 60) {
+                second = 0;
+                minute++;
+            }
+            document.querySelector("#timer").textContent = `${minute}:${second}`;
+        }, 1000)
+    }
+
+    // high score
+    function saveHighScr(score) {
+        if (!localStorage.getItem("highScore")) {
+            localStorage.setItem("highScore", 0);
+        }
+        const highScore = Number(localStorage.getItem("highScore"));
+        if (score > highScore) {
+            localStorage.setItem("highScore", score);
+            document.querySelector("#high-score").textContent = localStorage.getItem("highScore");
+        }
+    }
 });
