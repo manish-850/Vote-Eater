@@ -2,16 +2,16 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // variables
     const board = document.querySelector('main .bottom');
-    const side = 50;
     const foodMusic = document.querySelector(".food-music");
     const over = document.querySelector(".game-over")
-    let rows = Math.floor(board.clientHeight / side);
-    let cols = Math.floor(board.clientWidth / side);
     const score = document.querySelector("#score");
     const startBtn = document.querySelector(".start-btn");
     const startOverlay = document.querySelector(".start-overlay");
     const replayBtn = document.querySelector(".replay-btn");
     const overOverlay = document.querySelector(".over-overlay");
+    const side = 50;
+    let rows = Math.floor(board.clientHeight / side);
+    let cols = Math.floor(board.clientWidth / side);
     let scr = 0;
     let snake = [{ x: 1, y: 3 }];
     let food = null
@@ -21,12 +21,8 @@ window.addEventListener("DOMContentLoaded", () => {
     let minute = 0;
     const foodImg = ["./img/rahul2.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
 
-    // initial high score
-    
-
     foodMusic.load();
     over.load();
-
 
     // direction
     window.addEventListener('keydown', (e) => {
@@ -270,10 +266,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // high score
     function saveHighScr(score) {
-        if (!localStorage.getItem("highScore")) {
-            localStorage.setItem("highScore", 0);
-        }
-        const highScore = Number(localStorage.getItem("highScore"));
+        const highScore = Number(localStorage.getItem("highScore")) || 0;
         if (score > highScore) {
             localStorage.setItem("highScore", score);
             document.querySelector("#high-score").textContent = localStorage.getItem("highScore");

@@ -1,4 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -7,104 +8,122 @@
     background-color: black;
     color: white;
 }
-html, body {
+
+html,
+body {
     height: 100vh;
     width: 100%;
 }
-body{
+
+body {
     position: relative;
 }
-.start-overlay{
+
+.overlay {
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
     align-items: center;
     justify-content: center;
+     background-color: rgba(0, 0, 0, 0.26);
+    backdrop-filter: blur(1px);
+}
+
+.start-overlay {
     transform: scale(1);
     z-index: 100;
+
 }
-.over-overlay{
-    position: absolute;
-        top: 10%;
-        left: 0;
-        width: 100%;
-        height: 90%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transform: scale(0);
-        z-index: 99;
+
+.over-overlay {
+    top: 10%;
+    height: 90%;
+    transform: scale(0);
+    z-index: 99;
 }
-.game-start{
+
+.overlay-gif {
     height: 200px;
-    text-align: center;
-    background-color: rgba(209, 156, 86, 0.993);
-    padding: 50px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(179, 106, 106, 0.5);
-}
-.game-start h1{
-    margin-bottom: 20px;
-    font-size: 36px;
-    color: rgb(0, 0, 0);
+    width: 200px;
     background-color: transparent;
+    background-position: center;
+    background-repeat: no-repeat;
+    backdrop-filter: blur(5px);
+    padding: 10px;
+    border-radius: 10px;
 }
-.game-start button{
-    padding: 10px 20px;
+.overlay-gif1{
+    background-image: url(./img/modi_gif1.gif);
+}
+.overlay-gif2{
+    background-image: url(./img/modi_gif2.gif);
+}
+.btn {
+    padding: 8px 16px;
     font-size: 18px;
     border: none;
     font-weight: 600;
-    border-radius: 25px;
+    border-radius: 30px;
     cursor: pointer;
-    background-color: rgb(226, 138, 5);
+    background-color: #ffffff;
     color: rgb(0, 0, 0);
 }
-.game-start button:active{
+
+.btn:active {
     transform: scale(0.95);
 }
-main{
+
+main {
     width: 100%;
     height: 100%;
     padding: 0 30px;
     display: flex;
     flex-direction: column;
 }
-.top{
+
+.top {
     width: 100%;
     height: 10%;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-.top h3{
+
+.top h3 {
     padding: 5px;
     border: 1px solid black;
     font-size: 24px;
     font-weight: 600;
 }
-.bottom{
+
+.bottom {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
     grid-template-rows: repeat(auto-fill, minmax(50px, 1fr));
     height: 90%;
     width: 100%;
 }
-.block{
+
+.block {
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid #dad4d4;
+    border: 1px solid #ca923d;
+    border-radius: 50%;
 }
-.snake{
-    background-image: url(./img/modi3.png);
+
+.snake {
+    background-image: url(./img/modi.jpg);
     background-size: cover;
     background-position: center;
 }
 
-.food{
+.food {
 
     background-size: cover;
     background-position: center;
