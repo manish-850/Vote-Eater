@@ -30,7 +30,7 @@ body {
     gap: 20px;
     align-items: center;
     justify-content: center;
-     background-color: rgba(0, 0, 0, 0.26);
+    background-color: rgba(0, 0, 0, 0.26);
     backdrop-filter: blur(1px);
 }
 
@@ -57,12 +57,15 @@ body {
     padding: 10px;
     border-radius: 10px;
 }
-.overlay-gif1{
+
+.overlay-gif1 {
     background-image: url(./img/modi_gif1.gif);
 }
-.overlay-gif2{
+
+.overlay-gif2 {
     background-image: url(./img/modi_gif2.gif);
 }
+
 .btn {
     padding: 8px 16px;
     font-size: 18px;
@@ -124,16 +127,30 @@ main {
 }
 
 .food {
-
     background-size: cover;
     background-position: center;
 }
+.credit{
+    background-color: transparent;
+}
+.credit a {
+    text-decoration: none;
+    color: #ca923d;
+    background-color: transparent;
+}
+
+.credit a i {
+    color: #ca923d;
+    font-size: 25px;
+    background-color: transparent;
+}
+
 @media (max-width:792px) {
-    
+
     .top h3 {
-            padding: 5px;
-            border: 1px solid black;
-            font-size: 16px;
-            font-weight: 600;
-        }
+        padding: 5px;
+        border: 1px solid black;
+        font-size: 16px;
+        font-weight: 600;
+    }
 }
