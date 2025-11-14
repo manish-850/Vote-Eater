@@ -4,6 +4,7 @@ window.addEventListener("DOMContentLoaded", () => {
     const board = document.querySelector('main .bottom');
     const foodMusic = document.querySelector(".food-music");
     const over = document.querySelector(".game-over")
+    const bgm = document.querySelector(".bgm");
     const score = document.querySelector("#score");
     const startBtn = document.querySelector(".start-btn");
     const startOverlay = document.querySelector(".start-overlay");
@@ -23,9 +24,13 @@ window.addEventListener("DOMContentLoaded", () => {
     let minute = 0;
     const foodImg = ["./img/rahul.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
 
+    bgm.load()
     foodMusic.load();
+    foodMusic.volume=0.5;
     over.load();
-
+    // over.volume=1;
+    bgm.volume=0.2;
+    bgm.play()
 
     // high score 
     highScore = Number(localStorage.getItem("highScore")) || 0;
