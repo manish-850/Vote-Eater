@@ -45,18 +45,21 @@ window.addEventListener("DOMContentLoaded", () => {
     let startX, startY, endX, endY;
 
     board.addEventListener("touchstart", (e) => {
+        e.preventDefault();
         const touch = e.touches[0];
         startX = touch.clientX;
         startY = touch.clientY;
     });
 
     board.addEventListener("touchmove", (e) => {
+        e.preventDefault(); 
         const touch = e.touches[0];
         endX = touch.clientX;
         endY = touch.clientY;
     });
 
     board.addEventListener("touchend", () => {
+        e.preventDefault(); 
         const diffX = endX - startX;
         const diffY = endY - startY;
 
