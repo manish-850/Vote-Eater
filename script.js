@@ -15,11 +15,11 @@ window.addEventListener("DOMContentLoaded", () => {
     let scr = 0;
     let snake = [{ x: 1, y: 3 }];
     let food = null
-    let direction = 'right';
+    let direction = 'down';
     let timerLoopId;
     let second = 0;
     let minute = 0;
-    const foodImg = ["./img/rahul2.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
+    const foodImg = ["./img/rahul.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
 
     foodMusic.load();
     over.load();
@@ -41,6 +41,36 @@ window.addEventListener("DOMContentLoaded", () => {
             direction = 'right';
         }
     });
+
+    let startX, startY, endX, endY;
+
+    board.addEventListener("touchstart", (e) => {
+        const touch = e.touches[0];
+        startX = touch.clientX;
+        startY = touch.clientY;
+    });
+
+    board.addEventListener("touchmove", (e) => {
+        const touch = e.touches[0];
+        endX = touch.clientX;
+        endY = touch.clientY;
+    });
+
+    board.addEventListener("touchend", () => {
+        const diffX = endX - startX;
+        const diffY = endY - startY;
+
+        if (Math.abs(diffX) > Math.abs(diffY)) {
+            // horizontal swipe
+            if (diffX > 0 && direction !== "left") direction = "right";
+            else if (diffX < 0 && direction !== "right") direction = "left";
+        } else {
+            // vertical swipe
+            if (diffY > 0 && direction !== "up") direction = "down";
+            else if (diffY < 0 && direction !== "down") direction = "up";
+        }
+    });
+
 
     // creating board
     function createBlocks() {
@@ -241,7 +271,7 @@ window.addEventListener("DOMContentLoaded", () => {
         food = null;
         overOverlay.style.transform = "scale(0)";
         overOverlay.style.transition = "0.5s";
-        direction = "right";
+        direction = "down";
         scr = 0;
         score.textContent = scr;
         document.querySelector("#timer").textContent = 0;
