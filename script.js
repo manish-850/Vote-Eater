@@ -28,7 +28,6 @@ window.addEventListener("DOMContentLoaded", () => {
     foodMusic.load();
     foodMusic.volume=0.5;
     over.load();
-    // over.volume=1;
     bgm.volume=0.2;
     bgm.play()
 
