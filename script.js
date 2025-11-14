@@ -13,10 +13,12 @@ window.addEventListener("DOMContentLoaded", () => {
     let rows = Math.floor(board.clientHeight / side);
     let cols = Math.floor(board.clientWidth / side);
     let scr = 0;
+    let highScore=0;
     let snake = [{ x: 1, y: 3 }];
     let food = null
     let direction = 'down';
     let timerLoopId;
+    let gameLoopId;
     let second = 0;
     let minute = 0;
     const foodImg = ["./img/rahul.jpg", "./img/mamta.png", "./img/arvind.jpeg", "./img/lallu.png", "./img/tejpratap.jpg"];
@@ -24,6 +26,11 @@ window.addEventListener("DOMContentLoaded", () => {
     foodMusic.load();
     over.load();
 
+
+    // high score 
+    highScore = Number(localStorage.getItem("highScore")) || 0;
+    document.querySelector("#high-score").textContent = highScore;
+    
     // direction
     window.addEventListener('keydown', (e) => {
         if (e.key === 'ArrowUp' && direction !== 'down') {
@@ -45,34 +52,32 @@ window.addEventListener("DOMContentLoaded", () => {
     let startX, startY, endX, endY;
 
     board.addEventListener("touchstart", (e) => {
-        e.preventDefault();
+        e.preventDefault();   // stop pull-to-refresh
         const touch = e.touches[0];
         startX = touch.clientX;
         startY = touch.clientY;
-    });
+    }, { passive: false });
 
     board.addEventListener("touchmove", (e) => {
-        e.preventDefault(); 
+        e.preventDefault();   // stop scrolling
         const touch = e.touches[0];
         endX = touch.clientX;
         endY = touch.clientY;
-    });
+    }, { passive: false });
 
-    board.addEventListener("touchend", () => {
-        e.preventDefault(); 
+    board.addEventListener("touchend", (e) => {
+        e.preventDefault();   // stop pull-to-refresh
         const diffX = endX - startX;
         const diffY = endY - startY;
 
         if (Math.abs(diffX) > Math.abs(diffY)) {
-            // horizontal swipe
             if (diffX > 0 && direction !== "left") direction = "right";
             else if (diffX < 0 && direction !== "right") direction = "left";
         } else {
-            // vertical swipe
             if (diffY > 0 && direction !== "up") direction = "down";
             else if (diffY < 0 && direction !== "down") direction = "up";
         }
-    });
+    }, { passive: false });
 
 
     // creating board
@@ -119,8 +124,8 @@ window.addEventListener("DOMContentLoaded", () => {
     // generating food
     function foodGenerator() {
         const cells = document.querySelectorAll('.block');
-        let foodX = Math.floor(Math.random() * (board.clientHeight / side));
-        let foodY = Math.floor(Math.random() * (board.clientWidth / side));
+        let foodX = Math.floor(Math.random() * rows);
+        let foodY = Math.floor(Math.random() * cols);
         const foodImgUrl = foodImg[Math.floor(Math.random() * foodImg.length)];
         snake.forEach((part) => {
             if (part.x == foodX && part.y == foodY) {
@@ -146,7 +151,6 @@ window.addEventListener("DOMContentLoaded", () => {
                 cells.forEach((cell) => {
                     if (cell.getAttribute('data-row') == part.x && cell.getAttribute('data-col') == part.y) {
                         cell.classList.remove('snake');
-
                     }
                 })
             })
@@ -163,7 +167,7 @@ window.addEventListener("DOMContentLoaded", () => {
             })
         }
 
-        if (direction === 'up') {
+        else if (direction === 'up') {
             head = { x: snake[0].x - 1, y: snake[0].y };
             snake.forEach((part) => {
                 cells.forEach((cell) => {
@@ -207,7 +211,7 @@ window.addEventListener("DOMContentLoaded", () => {
         }
         else {
             if (snake[0].x == food.x && snake[0].y == food.y) {
-                const tail = { x: snake[0].x, y: snake[0].y };
+                const tail = { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y };
                 foodMusic.play();
                 snake.push(tail);
                 clearFood();
@@ -216,7 +220,8 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function gameLoop() {
-        const gameLoopId = setInterval(() => {
+        clearInterval(gameLoopId)
+        gameLoopId = setInterval(() => {
             moveSnake()
             drawSnake()
             playGame()
@@ -299,10 +304,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // high score
     function saveHighScr(score) {
-        const highScore = Number(localStorage.getItem("highScore")) || 0;
         if (score > highScore) {
             localStorage.setItem("highScore", score);
-            document.querySelector("#high-score").textContent = localStorage.getItem("highScore");
+            highScore = Number(localStorage.getItem("highScore"));
+            document.querySelector("#high-score").textContent = Number(localStorage.getItem("highScore"))
         }
     }
 });
