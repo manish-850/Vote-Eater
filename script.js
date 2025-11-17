@@ -41,7 +41,6 @@ window.addEventListener("DOMContentLoaded", () => {
             direction = 'up';
         }
 
-
         else if (e.key === 'ArrowDown' && direction !== 'up') {
             direction = 'down';
         }
@@ -245,6 +244,7 @@ window.addEventListener("DOMContentLoaded", () => {
                 clearInterval(gameLoopId);
                 gameOver()
             }
+
         }, 400);
     }
 
