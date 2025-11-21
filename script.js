@@ -106,10 +106,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
     createBlocks();
-    
+    const cells = document.querySelectorAll('.block');
     // resizing the board
     window.addEventListener('resize', () => {
-        const cells = document.querySelectorAll('.block');
+        cells = document.querySelectorAll('.block');
         createBlocks();
         drawSnake()
     });
@@ -238,14 +238,14 @@ window.addEventListener("DOMContentLoaded", () => {
     replayBtn.addEventListener("click", () => {
         clearSnake();
         clearFood();
+        overOverlay.style.transform = "scale(0)";
+        overOverlay.style.transition = "0.5s";
         snake = [{ x: 1, y: 3 }];
         food = null;
         direction = "down";
         scr = 0;
         score.textContent = scr;
         timerElem.textContent = 0;
-        overOverlay.style.transform = "scale(0)";
-        overOverlay.style.transition = "0.5s";
         setTimeout(gameLoop, 600)
         timer();
     })
