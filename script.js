@@ -106,10 +106,10 @@ window.addEventListener("DOMContentLoaded", () => {
         }
     }
     createBlocks();
-    const cells = document.querySelectorAll('.block');
-
+    
     // resizing the board
     window.addEventListener('resize', () => {
+        const cells = document.querySelectorAll('.block');
         createBlocks();
         drawSnake()
     });
@@ -128,12 +128,9 @@ window.addEventListener("DOMContentLoaded", () => {
 
     // removing snake
     function clearSnake() {
-        snake.forEach((part) => {
-            cells.forEach((cell) => {
-                if (cell.getAttribute('data-row') == part.x && cell.getAttribute('data-col') == part.y) {
-                    cell.classList.remove('snake');
-                }
-            })
+        const snakeCells = document.querySelectorAll('.snake');
+        snakeCells.forEach((cell) => {
+            cell.classList.remove('snake');
         })
     }
 
@@ -183,14 +180,11 @@ window.addEventListener("DOMContentLoaded", () => {
     }
 
     function clearFood() {
-        cells.forEach((cell) => {
-            if (cell.getAttribute('data-row') == food.x && cell.getAttribute('data-col') == food.y) {
-                document.querySelector('.food').style.backgroundImage = "";
-                scr += 10;
-                score.textContent = scr;
-                cell.classList.remove('food');
-            }
-        })
+        const foodCell = document.querySelector('.food');
+        if (foodCell) {
+            foodCell.style.backgroundImage = "";
+            foodCell.classList.remove('food');
+        }
         food = null;
     }
 
@@ -203,9 +197,19 @@ window.addEventListener("DOMContentLoaded", () => {
                 const tail = { x: snake[snake.length - 1].x, y: snake[snake.length - 1].y };
                 foodMusic.play();
                 snake.push(tail);
+                scr += 10;
+                score.textContent = scr;
                 clearFood();
             }
         }
+    }
+    // game over
+    function gameOver() {
+        clearInterval(timerLoopId);
+        overOverlay.style.transform = "scale(1)";;
+        overOverlay.style.transition = "0.5s";
+        over.play()
+        saveHighScr(scr)
     }
 
     function gameLoop() {
@@ -230,30 +234,18 @@ window.addEventListener("DOMContentLoaded", () => {
         timer()
     })
 
-    function gameOver() {
-        clearInterval(timerLoopId);
-        overOverlay.style.transform = "scale(1)";;
-        overOverlay.style.transition = "0.5s";
-        over.play()
-        saveHighScr(scr)
-    }
-
     // replay game
     replayBtn.addEventListener("click", () => {
-        cells.forEach((cell) => {
-            cell.classList.remove('snake');
-            const foodCell = document.querySelector('.food');
-            if (foodCell) foodCell.style.backgroundImage = "";
-            cell.classList.remove('food');
-        })
+        clearSnake();
+        clearFood();
         snake = [{ x: 1, y: 3 }];
         food = null;
-        overOverlay.style.transform = "scale(0)";
-        overOverlay.style.transition = "0.5s";
         direction = "down";
         scr = 0;
         score.textContent = scr;
         timerElem.textContent = 0;
+        overOverlay.style.transform = "scale(0)";
+        overOverlay.style.transition = "0.5s";
         setTimeout(gameLoop, 600)
         timer();
     })
@@ -265,7 +257,7 @@ window.addEventListener("DOMContentLoaded", () => {
         minute = 0;
         timerLoopId = setInterval(() => {
             second++;
-            if (second === 59) {
+            if (second === 60) {
                 second = 0;
                 minute++;
             }
